@@ -7,7 +7,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.imobiliaria.model.Imobiliaria;
@@ -26,6 +25,7 @@ public class ImobiliariaRepository {
 		em.flush();
 	}
 
+	@Transactional(transactionManager = "imobiliariaTX", readOnly = false)
 	public void removePerfil(Perfil perfil) {
 		em.remove(perfil);
 	}
@@ -60,13 +60,13 @@ public class ImobiliariaRepository {
 				.getSingleResult();
 	}
 	
-	@Transactional(transactionManager = "imobiliariaTX", readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(transactionManager = "imobiliariaTX", readOnly = false)
 	public void insereImobiliaria(Imobiliaria imobiliaria) {
 		em.merge(imobiliaria);
 		em.flush();
 	}
 
-	@Transactional(transactionManager = "imobiliariaTX", readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(transactionManager = "imobiliariaTX", readOnly = false)
 	public void removeImobiliaria(Imobiliaria imobiliaria) {
 		em.remove(imobiliaria);
 	}
@@ -90,13 +90,13 @@ public class ImobiliariaRepository {
 		return em.createQuery("from Imobiliaria", Imobiliaria.class).getResultList();
 	}
 	
-	@Transactional(transactionManager = "imobiliariaTX", readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(transactionManager = "imobiliariaTX", readOnly = false)
 	public void insereImovel(Imovel imovel) {
 		em.merge(imovel);
 		em.flush();
 	}
 
-	@Transactional(transactionManager = "imobiliariaTX", readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	@Transactional(transactionManager = "imobiliariaTX", readOnly = false)
 	public void removeImovel(Imovel imovel) {
 		em.remove(imovel);
 	}
