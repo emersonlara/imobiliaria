@@ -31,8 +31,10 @@ public class ImobiliariaRepository {
 	}
 
 	public boolean verificaPerfilExistente(Integer perfilId, String email) {
-		// TODO Auto-generated method stub
-		return false;
+		return em.createQuery("select case when count(id) = 0 then true else false end from Perfil where upper(email) = upper(:email)  and :perfilId is null or id <> :perfilId", Boolean.class)
+				.setParameter("email", email)
+				.setParameter("perfilId", perfilId)
+				.getSingleResult();
 	}
 
 	public Perfil buscaPerfil(Integer perfilId) {
@@ -53,7 +55,9 @@ public class ImobiliariaRepository {
 	}
 
 	public String recuperaSenha(String email) {
-		return null;
+		return em.createQuery("select senha from Perfil where upper(email) = upper(:email)", String.class)
+				.setParameter("email", email)
+				.getSingleResult();
 	}
 	
 	@Transactional(transactionManager = "imobiliariaTX", readOnly = false, propagation = Propagation.REQUIRES_NEW)
@@ -67,9 +71,11 @@ public class ImobiliariaRepository {
 		em.remove(imobiliaria);
 	}
 
-	public boolean verificaImobiliariaExistente(Integer imobiliariaId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean verificaImobiliariaExistente(Integer imobiliariaId, String nome) {
+		return em.createQuery("select case when count(id) = 0 then true else false end from Imobiliaria where upper(nome) = upper(:nome)  and :imobiliariaId is null or id <> :imobiliariaId", Boolean.class)
+				.setParameter("nome", nome)
+				.setParameter("imobiliariaId", imobiliariaId)
+				.getSingleResult();
 	}
 
 	public Imobiliaria buscaImobiliaria(Integer imobiliariaId) {
@@ -96,7 +102,10 @@ public class ImobiliariaRepository {
 	}
 
 	public boolean verificaImovelExistente(Integer imovelId, String descricao) {
-		return false;
+		return em.createQuery("select case when count(id) = 0 then true else false end from Imovel where upper(descricao) = upper(:descricao)  and :imovelId is null or id <> :imovelId", Boolean.class)
+				.setParameter("descricao", descricao)
+				.setParameter("imovelId", imovelId)
+				.getSingleResult();
 	}
 
 	public Imovel buscaImovel(Integer imovelId) {
